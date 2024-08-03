@@ -90,8 +90,9 @@ def extract_historical_weather_data():
     # to retrieve historical weather data for.
     # Tip: This task can be accomplished by using Dynamic Task Mapping and you only need to modify two lines of code.
 
-    coordinates = get_lat_long_for_city(city="Bern")
-    historical_weather = get_historical_weather(coordinates=coordinates)
+    # SOLUTION: Map both tasks using .expand. Note that the city input has to be a list of cities!
+    coordinates = get_lat_long_for_city.expand(city=["Bern", "Basel", "Zurich"])
+    historical_weather = get_historical_weather.expand(coordinates=coordinates)
 
     @task(
         outlets=[Dataset("duckdb://include/dwh/historical_weather_data")],
