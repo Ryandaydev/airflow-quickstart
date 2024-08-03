@@ -23,6 +23,12 @@ from include.meterology_utils import (
     get_historical_weather_from_city_coordinates,
 )
 
+# -------- #
+# Datasets #
+# -------- #
+
+start_dataset = Dataset("start")
+
 # --- #
 # DAG #
 # --- #
@@ -47,7 +53,7 @@ def turn_json_into_table(in_json):
 
 @dag(
     start_date=datetime(2023, 1, 1),
-    schedule=None,
+    schedule=[start_dataset],
     catchup=False,
     default_args=gv.default_args,
     description="DAG that retrieves weather information and saves it to a local JSON.",

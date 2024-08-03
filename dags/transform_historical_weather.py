@@ -5,6 +5,7 @@
 # --------------- #
 
 from airflow.decorators import dag, task
+from airflow.datasets import Dataset
 from pendulum import datetime
 import pandas as pd
 
@@ -54,7 +55,7 @@ def create_historical_weather_reporting_table(in_table: Table, hot_day_celsius: 
 @dag(
     start_date=datetime(2023, 1, 1),
     # this DAG runs as soon as the climate and weather data is ready in DuckDB
-    schedule=None,
+    schedule=[Dataset("duckdb://include/dwh/historical_weather_data")],
     catchup=False,
     default_args=gv.default_args,
     description="Runs transformations on climate and current weather data in DuckDB.",
